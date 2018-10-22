@@ -20,6 +20,7 @@ app.use(require("express-session")({
 }));
 
 // encoding and decoding sessions
+passport.use(new LocalStrategy(User.authenticate));
 passport.serializeUser(User.serializeUser);
 passport.deserializeUser(User.deserializeUser);
 
@@ -35,6 +36,7 @@ app.get("/secret", function(req, res) {
     res.render("secret");
 });
 
+// REGISTER
 app.get("/register", function(req, res) {
     res.render("register");
 });
@@ -52,6 +54,19 @@ app.post("/register", function(req, res) {
         });
     });
 });
+
+// LOGIN
+app.get("/login", function(req, res) {
+    res.render("login");
+});
+
+// middleware
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/secret",
+    failureRedirect: "/login"
+}), function(req, res) {
+});
+
 
 app.listen(process.env.PORT, process.env.IP, function() {
    console.log("server started..."); 
