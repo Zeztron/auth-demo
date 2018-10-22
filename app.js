@@ -32,7 +32,7 @@ app.get("/", function(req, res) {
     res.render("home");
 });
 
-app.get("/secret", function(req, res) {
+app.get("/secret", isLoggedIn, function(req, res) {
     res.render("secret");
 });
 
@@ -42,8 +42,8 @@ app.get("/register", function(req, res) {
 });
 
 app.post("/register", function(req, res) {
-    req.body.username
-    req.body.password
+    req.body.username;
+    req.body.password;
     User.register(new User({username: req.body.username}), req.body.password, function(err, user) {
         if (err) {
             console.log(err);
@@ -66,6 +66,20 @@ app.post("/login", passport.authenticate("local", {
     failureRedirect: "/login"
 }), function(req, res) {
 });
+
+// LOGOUT
+app.get("/logout", function(req, res) {
+    req.logout();
+    res.redirect("/");
+});
+
+
+function isLoggedIn(req, res, next) {
+    if(req.isAuthenticated()) {
+        return next();
+    }
+    res.rediered("/login");
+}
 
 
 app.listen(process.env.PORT, process.env.IP, function() {
