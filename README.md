@@ -1,2 +1,2 @@
 # auth-demo
-Small Demo to test User Authentication
+Small Demo to test User Authentication using passport.js
